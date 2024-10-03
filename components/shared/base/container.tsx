@@ -8,7 +8,7 @@ interface ContainerProps {
 
 const Container: React.FC<ContainerProps> = ({ children, className }) => {
   return (
-    <div className={cn(className, "bg-white rounded-lg shadow-md p-6 flex flex-col justify-between h-full border-2 border-gray-100")}>
+    <div className={cn(className, "bg-white rounded-lg shadow-md p-6 flex flex-col h-full border-2 border-gray-100")}>
       {children}
     </div>
   );

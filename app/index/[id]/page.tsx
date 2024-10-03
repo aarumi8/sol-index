@@ -1,4 +1,6 @@
 import Container from "@/components/shared/base/container";
+import IndexActions from "@/components/shared/base/index-actions";
+import { Title } from "@/components/shared/base/title";
 import PriceChart from "@/components/shared/charts/price-chart";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -23,10 +25,13 @@ const IndexPage: React.FC<Props> = ({ className }) => {
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="basis-2/3">
                     <Container>
+                        <Title text="Chart" className="font-extrabold mb-4" />
                         <PriceChart data={data} />
                     </Container>
                 </div>
-                <div className="basis-1/3 bg-slate-400"></div>
+                <div className={cn("basis-1/3", className)}>
+                    <IndexActions />
+                </div>
             </div>
         </div>
     );

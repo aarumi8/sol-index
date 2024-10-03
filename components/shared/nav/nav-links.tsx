@@ -14,15 +14,15 @@ const NavLinks: React.FC<Props> = ({ className }) => {
     const pathname = usePathname();
 
     return (
-        <div className={cn("flex flex-col w-full gap-2", className)}>
+        <div className={cn("flex flex-col md:flex-row w-full md:w-auto gap-2", className)}>
             {pathname !== "/" && (
-                <Link href="/" className="w-full">
-                    <Button className="w-full">Explore</Button>
+                <Link href="/" className="w-full md:w-auto">
+                    <Button className="w-full md:w-auto">Explore</Button>
                 </Link>
             )}
             {pathname !== "/create" && (
-                <Link href="/create" className="w-full">
-                    <Button className="w-full">Create Index</Button>
+                <Link href="/create" className="w-full md:w-auto">
+                    <Button className="w-full md:w-auto">Create Index</Button>
                 </Link>
             )}
         </div>

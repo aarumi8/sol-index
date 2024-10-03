@@ -15,7 +15,10 @@ const CreateIndexForm: React.FC = () => {
     defaultValues: {
       indexName: "",
       indexTicker: "",
-      tokens: [{ address: "", percentage: 0 }]
+      tokens: [
+        { address: "", percentage: 0 },
+        { address: "", percentage: 0 }
+      ]
     }
   });
 
@@ -102,7 +105,7 @@ const CreateIndexForm: React.FC = () => {
               )}
             />
             
-            {index > 0 && (
+            {index > 1 && (
               <Button type="button" variant="destructive" onClick={() => remove(index)}>
                 Remove
               </Button>

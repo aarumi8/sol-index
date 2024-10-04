@@ -1,30 +1,35 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import { ArrowUpDown } from 'lucide-react';
 
 interface TableData {
-  index: string;
+  token: string;
   price: number;
   mcap: string;
+  percentage: number;
 }
 
-interface IndexTableProps {
+interface TokensTableProps {
   data: TableData[];
 }
 
-type SortKey = 'price' | 'mcap';
+type SortKey = 'price' | 'mcap' | 'percentage';
 
-const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
+const TokensTable: React.FC<TokensTableProps> = ({ data: initialData }) => {
   const [data, setData] = useState(initialData);
-  const [sortKey, setSortKey] = useState<SortKey | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortKey, setSortKey] = useState<SortKey>('percentage');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const router = useRouter();
 
+  useEffect(() => {
+    handleSort('percentage');
+  }, []);
+
   const handleRowClick = (item: TableData) => {
-    router.push(`/item/${item.index}`);
+    router.push(`/item/${item.token}`);
   };
 
   const handleSort = (key: SortKey) => {
@@ -33,13 +38,12 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
     setSortOrder(isAsc ? 'desc' : 'asc');
 
     const sortedData = [...data].sort((a, b) => {
-      if (key === 'price') {
-        return isAsc ? b.price - a.price : a.price - b.price;
+      if (key === 'price' || key === 'percentage') {
+        return isAsc ? a[key] - b[key] : b[key] - a[key];
       } else {
-        // For 'mcap', remove the '$' and 'T'/'B' to convert to number
         const aValue = parseFloat(a.mcap.replace(/[$TB]/g, ''));
         const bValue = parseFloat(b.mcap.replace(/[$TB]/g, ''));
-        return isAsc ? bValue - aValue : aValue - bValue;
+        return isAsc ? aValue - bValue : bValue - aValue;
       }
     });
 
@@ -48,8 +52,8 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 font-bold text-sm text-accent-foreground px-4">
-        <div>Index</div>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 font-bold text-sm text-accent-foreground px-4">
+        <div>Token</div>
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('price')}>
           Price
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -58,22 +62,27 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
           Market Cap
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
+        <div className="hidden md:flex items-center cursor-pointer" onClick={() => handleSort('percentage')}>
+          Percentage
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
         <div className="hidden md:block"></div>
       </div>
       {data.map((item, idx) => (
         <div 
           key={idx} 
-          className="bg-background rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-4 gap-4 items-center cursor-pointer border border-input hover:shadow-lg hover:scale-[1.02] transition-all"
+          className="bg-background rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-5 gap-4 items-center cursor-pointer border border-input hover:shadow-lg hover:scale-[1.02] transition-all"
           onClick={() => handleRowClick(item)}
         >
-          <div>{item.index}</div>
+          <div>{item.token}</div>
           <div>${item.price.toLocaleString()}</div>
           <div className="hidden md:block">{item.mcap}</div>
+          <div className="hidden md:block">{item.percentage.toFixed(2)}%</div>
           <div className="hidden md:flex justify-end">
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
-                router.push(`/item/${item.index}`);
+                router.push(`/item/${item.token}`);
               }}
             >
               View
@@ -85,4 +94,4 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
   );
 };
 
-export default IndexTable;
+export default TokensTable;

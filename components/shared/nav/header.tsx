@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import NavLinks from "./nav-links";
+import { ModeToggle } from "./mode-toggle";
 
 interface Props {
     className?: string;
@@ -17,24 +18,27 @@ export const Header: React.FC<Props> = ({ className }) => {
                 <Link href='/' className="inline-block">
                     <h1 className="text-3xl font-bold">Solana Index</h1>
                 </Link>
-                <nav className="hidden md:flex gap-2">
-                    <NavLinks />
-                </nav>
-                <Sheet>
-                    <SheetTrigger asChild className="md:hidden">
-                        <Button variant="outline" size="icon">
-                            <Menu className="h-4 w-4" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="top" className="w-full">
-                        <SheetHeader>
-                            <SheetTitle>Menu</SheetTitle>
-                        </SheetHeader>
-                        <div className="py-4">
-                            <NavLinks />
-                        </div>
-                    </SheetContent>
-                </Sheet>
+                <div className="flex items-center gap-2">
+                    <nav className="hidden md:flex gap-2">
+                        <NavLinks />
+                    </nav>
+                    <Sheet>
+                        <SheetTrigger asChild className="md:hidden">
+                            <Button variant="outline" size="icon">
+                                <Menu className="h-4 w-4" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="top" className="w-full">
+                            <SheetHeader>
+                                <SheetTitle>Menu</SheetTitle>
+                            </SheetHeader>
+                            <div className="py-4">
+                                <NavLinks />
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                    <ModeToggle />
+                </div>
             </div>
         </header>
     );

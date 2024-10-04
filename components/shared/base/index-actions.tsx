@@ -19,7 +19,7 @@ const IndexActions: React.FC<Props> = ({ className }) => {
                 <IndexAction title="Redeem the index and receive all the tokens of it" titleBtn="Redeem" />
             </div>
 
-            <Title text="All actions take 1% fee to the protocol and the index creator" size="xss" />
+            <Title text="All actions take 1% fee to the protocol and the index creator" size="xss" className="text-gray-600" />
         </Container>
     )
 }

@@ -11,7 +11,7 @@ interface Props {
 const IndexAction: React.FC<Props> = ({ className, title, titleBtn }) => {
     return (
         <div className="flex flex-col gap-1">
-            <Title text={title} size="xs" />
+            <Title text={title} size="xs" className="text-gray-600" />
             <Button size="lg">{titleBtn}</Button>
         </div>
     );

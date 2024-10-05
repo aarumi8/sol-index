@@ -1,14 +1,32 @@
 import React from "react";
-import { cn } from "@/lib/utils";
 import Container from "./container";
 import { Title } from "./title";
 import IndexAction from "./index-action";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
     className?: string;
+    isLoading?: boolean;
 }
 
-const IndexActions: React.FC<Props> = ({ className }) => {
+const IndexActions: React.FC<Props> = ({ className, isLoading }) => {
+    if (isLoading) {
+        return (
+            <Container className="gap-4">
+                <Skeleton className="h-8 w-1/2 mb-4" />
+                <div className="flex flex-col h-full gap-8">
+                    {[...Array(3)].map((_, index) => (
+                        <div key={index} className="space-y-2">
+                            <Skeleton className="h-4 w-3/4" />
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                    ))}
+                </div>
+                <Skeleton className="h-4 w-full mt-4" />
+            </Container>
+        );
+    }
+
     return (
         <Container className="gap-4">
             <Title text="Actions" className="font-extrabold" />

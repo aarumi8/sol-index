@@ -66,7 +66,7 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData, isLoading, e
     return (
       <div className="space-y-4">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="bg-background rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
+          <div key={i} className="bg-background rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-4 gap-4 items-center border border-input">
             <Skeleton className="h-4 w-[100px]" />
             <Skeleton className="h-4 w-[80px]" />
             <Skeleton className="hidden md:block h-4 w-[120px]" />

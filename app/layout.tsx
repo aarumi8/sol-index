@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/shared/nav/header";
 import { ThemeProvider } from "@/components/shared/base/theme-provider";
 import { Footer } from "@/components/shared/nav/footer";
+import { Providers } from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,15 +32,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable}`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system">
-          <Header />
-          <main className="antialiased container mx-auto p-4  min-h-screen">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system">
+            <Header />
+            <main className="antialiased container mx-auto p-4  min-h-screen">
+              {children}
+            </main>
+            <Footer />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

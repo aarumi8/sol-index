@@ -6,6 +6,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose 
 import { Menu } from "lucide-react";
 import NavLinks from "./nav-links";
 import { ModeToggle } from "./mode-toggle";
+import { WalletConnection } from "../solana/wallet-connection";
 
 interface Props {
     className?: string;
@@ -19,6 +20,7 @@ export const Header: React.FC<Props> = ({ className }) => {
                     <h1 className="text-3xl font-bold">Solana Index</h1>
                 </Link>
                 <div className="flex items-center gap-2">
+                    <WalletConnection />
                     <nav className="hidden md:flex gap-2">
                         <NavLinks />
                     </nav>

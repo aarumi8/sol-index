@@ -1,32 +1,49 @@
 'use client';
 
-// images of tokens inside, diagrams, timeframes changes, -mcap
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import { ArrowUpDown } from 'lucide-react';
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface TableData {
-  index: string;
+interface Token {
+  id: string;
+  address: string;
+  name: string;
+  ticker: string;
+  imageURL: string | null;
+  percentage: number;
+}
+
+interface Index {
+  id: string;
+  address: string;
+  name: string;
+  ticker: string;
   price: number;
-  mcap: string;
+  topTokens: Token[];
 }
 
 interface IndexTableProps {
-  data: TableData[];
+  data: Index[];
+  isLoading: boolean;
+  error: string | null;
 }
 
 type SortKey = 'price' | 'mcap';
 
-const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
+const IndexTable: React.FC<IndexTableProps> = ({ data: initialData, isLoading, error }) => {
   const [data, setData] = useState(initialData);
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const router = useRouter();
 
-  const handleRowClick = (item: TableData) => {
-    router.push(`/item/${item.index}`);
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
+
+  const handleRowClick = (item: Index) => {
+    router.push(`/index/${item.address}`);
   };
 
   const handleSort = (key: SortKey) => {
@@ -38,15 +55,33 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
       if (key === 'price') {
         return isAsc ? b.price - a.price : a.price - b.price;
       } else {
-        // For 'mcap', remove the '$' and 'T'/'B' to convert to number
-        const aValue = parseFloat(a.mcap.replace(/[$TB]/g, ''));
-        const bValue = parseFloat(b.mcap.replace(/[$TB]/g, ''));
-        return isAsc ? bValue - aValue : aValue - bValue;
+        return 0;
       }
     });
 
     setData(sortedData);
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="bg-background rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
+            <Skeleton className="h-4 w-[100px]" />
+            <Skeleton className="h-4 w-[80px]" />
+            <Skeleton className="hidden md:block h-4 w-[120px]" />
+            <div className="hidden md:flex justify-end">
+              <Skeleton className="h-10 w-[60px]" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="space-y-4">
@@ -56,26 +91,25 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData }) => {
           Price
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
-        <div className="hidden md:flex items-center cursor-pointer" onClick={() => handleSort('mcap')}>
-          Market Cap
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
+        <div className="hidden md:block">Top Tokens</div>
         <div className="hidden md:block"></div>
       </div>
-      {data.map((item, idx) => (
+      {data.map((item) => (
         <div 
-          key={idx} 
+          key={item.id} 
           className="bg-background rounded-lg shadow-md p-4 grid grid-cols-2 md:grid-cols-4 gap-4 items-center cursor-pointer border border-input hover:shadow-lg hover:scale-[1.02] transition-all"
           onClick={() => handleRowClick(item)}
         >
-          <div>{item.index}</div>
+          <div>{item.name} ({item.ticker})</div>
           <div>${item.price.toLocaleString()}</div>
-          <div className="hidden md:block">{item.mcap}</div>
+          <div className="hidden md:block">
+            {item.topTokens.map(token => token.name).join(', ')}
+          </div>
           <div className="hidden md:flex justify-end">
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
-                router.push(`/item/${item.index}`);
+                router.push(`/index/${item.address}`);
               }}
             >
               View

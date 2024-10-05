@@ -1,13 +1,7 @@
 import React from 'react';
-import IndexTable from '@/components/shared/base/index-table';
+import IndexTableWrapper from '@/components/shared/wrappers/index-table-wrapper';
 import CreateIndex from '@/components/shared/base/create-index';
 import Welcome from '@/components/shared/base/welcome';
-
-const data = [
-  { index: "BTC", price: 50000, mcap: "$1T" },
-  { index: "ETH", price: 3000, mcap: "$500B" },
-  { index: "ADA", price: 2, mcap: "$50B" },
-];
 
 export default function Home() {
   return (
@@ -28,7 +22,7 @@ export default function Home() {
       </div>
 
       <h1 className="text-2xl font-bold mb-4">Explore</h1>
-      <IndexTable data={data} />
+      <IndexTableWrapper />
     </>
   );
 }

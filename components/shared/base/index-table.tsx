@@ -1,5 +1,7 @@
 'use client';
 
+// images of tokens inside, diagrams, timeframes changes, -mcap
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';

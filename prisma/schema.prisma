@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Index {
+  id        String   @id @default(cuid())
+  address   String   @unique
+  name      String
+  ticker    String
+  price     Float
+  tokens    TokenInIndex[]
+  charts    IndexChart[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  address   String   @unique
+  name      String
+  ticker    String
+  imageURL  String?
+  mcap      Float
+  price     Float
+  indexes   TokenInIndex[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TokenInIndex {
+  id        String   @id @default(cuid())
+  index     Index    @relation(fields: [indexId], references: [id])
+  indexId   String
+  token     Token    @relation(fields: [tokenId], references: [id])
+  tokenId   String
+  percentage Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([indexId, tokenId])
+}
+
+model IndexChart {
+  id        String   @id @default(cuid())
+  index     Index    @relation(fields: [indexAddress], references: [address])
+  indexAddress String
+  timestamp DateTime @default(now())
+  price     Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

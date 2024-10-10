@@ -2,27 +2,11 @@
 
 import { createIndexSchema, CreateIndexFormData } from "@/constants/create-index-form-schema";
 import { PrismaClient } from '@prisma/client';
-import { Connection, PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
+import { checkTokenExistsOnSolana } from "./solanaUtils";
+import { getTokenData, getTokenPrice } from "./tokenUtils";
 
 const prisma = new PrismaClient();
-const connection = new Connection('https://koo-jpnlrt-fast-mainnet.helius-rpc.com');
-
-
-async function checkTokenExistsOnSolana(address: string): Promise<boolean> {
-  try {
-    const publicKey = new PublicKey(address);
-    const accountInfo = await connection.getAccountInfo(publicKey);
-
-    if (!accountInfo) {
-      return false;
-    }
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-
-  return true;
-}
 
 export async function createIndex(data: CreateIndexFormData) {
   const result = createIndexSchema.safeParse(data);
@@ -53,23 +37,39 @@ export async function createIndex(data: CreateIndexFormData) {
         address: new PublicKey(Math.random() * 1e9).toBase58(), // Generate a random address for demo purposes
         name: result.data.indexName,
         ticker: result.data.indexTicker,
-        price: 0, // Initial price, you might want to calculate this based on token prices
+        price: 0, // Initial price, will be calculated later
         tokens: {
           create: await Promise.all(result.data.tokens.map(async (tokenData) => {
+            const tokenInfo = await getTokenData(tokenData.address);
+            const tokenPrice = await getTokenPrice(tokenData.address);
+
             // Check if the token already exists in the database
             let token = await prisma.token.findUnique({
               where: { address: tokenData.address }
             });
 
-            // If the token doesn't exist, create it with dummy data
-            if (!token) {
+            if (token) {
+              // Update existing token with new data
+              token = await prisma.token.update({
+                where: { id: token.id },
+                data: {
+                  name: tokenInfo?.name || token.name,
+                  ticker: tokenInfo?.symbol || token.ticker,
+                  imageURL: tokenInfo?.logoURI || token.imageURL,
+                  price: tokenPrice || token.price,
+                  mcap: 0, // Market cap is still set to 0 as we don't have this data
+                }
+              });
+            } else {
+              // Create new token with fetched data
               token = await prisma.token.create({
                 data: {
                   address: tokenData.address,
-                  name: `Token ${tokenData.address.slice(0, 8)}`, // Dummy name
-                  ticker: `T${tokenData.address.slice(0, 3)}`, // Dummy ticker
-                  mcap: 0, // Dummy market cap
-                  price: 1, // Dummy price
+                  name: tokenInfo?.name || `Token ${tokenData.address.slice(0, 8)}`,
+                  ticker: tokenInfo?.symbol || `T${tokenData.address.slice(0, 3)}`,
+                  imageURL: tokenInfo?.logoURI || null,
+                  mcap: 0,
+                  price: tokenPrice || 1,
                 }
               });
             }
@@ -83,10 +83,23 @@ export async function createIndex(data: CreateIndexFormData) {
             };
           }))
         }
-      }
+      },
+      include: { tokens: { include: { token: true } } }
     });
 
-    return { success: true, message: 'Index created successfully', index: newIndex };
+    // Calculate the initial price of the index based on token prices and percentages
+    const indexPrice = newIndex.tokens.reduce((sum, tokenInIndex) => {
+      return sum + (tokenInIndex.token.price || 0) * (tokenInIndex.percentage / 100);
+    }, 0);
+
+    // Update the index with the calculated price
+    const updatedIndex = await prisma.index.update({
+      where: { id: newIndex.id },
+      data: { price: indexPrice },
+      include: { tokens: { include: { token: true } } }
+    });
+
+    return { success: true, message: 'Index created successfully', index: updatedIndex };
   } catch (error) {
     console.error('Error creating index:', error);
     return { success: false, error: 'Failed to create index in the database' };

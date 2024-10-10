@@ -7,7 +7,7 @@ import { createIndexSchema, CreateIndexFormData } from "@/constants/create-index
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { createIndex } from '@/app/actions';
+import { createIndex } from '@/app/actions/createIndex'
 import { Title } from '../base/title';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";

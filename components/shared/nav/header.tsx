@@ -17,7 +17,7 @@ export const Header: React.FC<Props> = ({ className }) => {
         <header className={cn(className, 'flex h-16 items-center px-4 py-2 border-b border-input mb-4')}>
             <div className="container mx-auto flex justify-between items-center">
                 <Link href='/' className="inline-block">
-                    <h1 className="text-3xl font-bold">Solana Index</h1>
+                    <h1 className="text-3xl font-bold">Sol Index</h1>
                 </Link>
                 <div className="flex items-center gap-2">
                     <WalletConnection />

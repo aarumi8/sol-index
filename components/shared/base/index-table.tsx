@@ -103,7 +103,7 @@ const IndexTable: React.FC<IndexTableProps> = ({ data: initialData, isLoading, e
           <div>{item.name} ({item.ticker})</div>
           <div>${item.price.toLocaleString()}</div>
           <div className="hidden md:block">
-            {item.topTokens.map(token => token.name).join(', ')}
+            {item.topTokens.map(token => token.ticker).join(', ')}
           </div>
           <div className="hidden md:flex justify-end">
             <Button 

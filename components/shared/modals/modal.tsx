@@ -28,6 +28,15 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const [inputValue, setInputValue] = React.useState('');
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Allow only numbers and one decimal point
+    if (/^\d*\.?\d*$/.test(value)) {
+      setInputValue(value);
+    }
+  };
+
   const handleConfirm = () => {
     onConfirm(inputValue);
     setInputValue('');
@@ -46,8 +55,9 @@ const Modal: React.FC<ModalProps> = ({
           </label>
           <Input
             id="modalInput"
+            type='text'
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleChange}
             className="w-full"
           />
         </div>

@@ -5,6 +5,7 @@ import { Header } from "@/components/shared/nav/header";
 import { ThemeProvider } from "@/components/shared/base/theme-provider";
 import { Footer } from "@/components/shared/nav/footer";
 import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,6 +39,7 @@ export default function RootLayout({
             defaultTheme="system">
             <Header />
             <main className="antialiased container mx-auto p-4  min-h-screen">
+              <Toaster />
               {children}
             </main>
             <Footer />

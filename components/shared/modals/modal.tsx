@@ -16,6 +16,7 @@ interface ModalProps {
   inputLabel: string;
   buttonLabel: string;
   onConfirm: (value: string) => void;
+  isProcessing?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -25,6 +26,7 @@ const Modal: React.FC<ModalProps> = ({
   inputLabel,
   buttonLabel,
   onConfirm,
+  isProcessing = false,
 }) => {
   const [inputValue, setInputValue] = React.useState('');
 
@@ -40,11 +42,10 @@ const Modal: React.FC<ModalProps> = ({
   const handleConfirm = () => {
     onConfirm(inputValue);
     setInputValue('');
-    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={isProcessing ? undefined : onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -59,11 +60,19 @@ const Modal: React.FC<ModalProps> = ({
             value={inputValue}
             onChange={handleChange}
             className="w-full"
+            disabled={isProcessing}
           />
         </div>
         <DialogFooter>
-          <Button onClick={handleConfirm}>{buttonLabel}</Button>
+          <Button onClick={handleConfirm} disabled={isProcessing}>
+            {buttonLabel}
+          </Button>
         </DialogFooter>
+        {isProcessing && (
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="text-white">Processing transaction...</div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

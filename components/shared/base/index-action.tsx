@@ -22,7 +22,7 @@ const IndexAction: React.FC<Props> = ({ className, title, titleBtn }) => {
     const renderModal = () => {
         switch (titleBtn.toLowerCase()) {
             case 'buy':
-                return <BuyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />;
+                return <BuyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />;
             case 'sell':
                 return <SellModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />;
             case 'redeem':

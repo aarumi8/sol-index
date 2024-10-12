@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { useRouter } from 'next/navigation';
 import { ArrowUpDown } from 'lucide-react';
 
 interface TableData {
@@ -10,6 +9,7 @@ interface TableData {
   price: number;
   mcap: string;
   percentage: number;
+  address: string;
 }
 
 interface TokensTableProps {
@@ -22,14 +22,13 @@ const TokensTable: React.FC<TokensTableProps> = ({ data: initialData }) => {
   const [data, setData] = useState(initialData);
   const [sortKey, setSortKey] = useState<SortKey>('percentage');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  const router = useRouter();
 
   useEffect(() => {
     handleSort('percentage');
   }, []);
 
   const handleRowClick = (item: TableData) => {
-    router.push(`/item/${item.token}`);
+    window.open(`https://dexscreener.com/solana/${item.address}`, '_blank');
   };
 
   const handleSort = (key: SortKey) => {
@@ -82,7 +81,7 @@ const TokensTable: React.FC<TokensTableProps> = ({ data: initialData }) => {
             <Button 
               onClick={(e) => {
                 e.stopPropagation();
-                router.push(`/item/${item.token}`);
+                window.open(`https://dexscreener.com/solana/${item.address}`, '_blank');
               }}
             >
               View

@@ -2,31 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-interface Token {
-  token: string;
-  price: number;
-  mcap: string;
-  percentage: number;
-}
-
-interface ChartData {
-  date: string;
-  price: number;
-}
-
-interface IndexData {
-  id: string;
-  address: string;
-  name: string;
-  ticker: string;
-  price: number;
-  tokens: Token[];
-  chartData: ChartData[];
-}
+import { IndexData, Token, ChartData } from '@/types';
+import { useIndexStore } from '@/store/useIndexStore';
 
 export function useIndex(address: string) {
-  const [indexData, setIndexData] = useState<IndexData | null>(null);
+  const { indexData, setIndexData } = useIndexStore();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +23,7 @@ export function useIndex(address: string) {
     };
 
     fetchIndexData();
-  }, [address]);
+  }, [address, setIndexData]);
 
   return { indexData, isLoading, error };
 }

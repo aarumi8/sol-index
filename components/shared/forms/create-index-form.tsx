@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 
 const CreateIndexForm: React.FC = () => {
   const { toast } = useToast();
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
 
@@ -39,7 +39,7 @@ const CreateIndexForm: React.FC = () => {
 
   const onSubmit = async (data: CreateIndexFormData) => {
     setIsLoading(true);
-    setError(null);
+    setError(undefined);
 
     const loadingToast = toast({
       title: "Creating Index",

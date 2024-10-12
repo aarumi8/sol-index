@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
         },
         charts: {
           orderBy: {
-            timestamp: 'asc',
+            timestamp: 'desc',
           },
           take: 100, // Adjust this number based on how many data points you want for the chart
         },
@@ -43,13 +43,14 @@ export async function GET(request: NextRequest) {
       tokens: index.tokens.map(tokenInIndex => ({
         token: tokenInIndex.token.ticker,
         price: tokenInIndex.token.price,
+        address: tokenInIndex.token.address,
         mcap: `$${(tokenInIndex.token.mcap / 1e9).toFixed(1)}B`, // Assuming mcap is stored in dollars
         percentage: tokenInIndex.percentage,
       })),
       chartData: index.charts.map(chart => ({
         date: chart.timestamp.toISOString(),
         price: chart.price,
-      })),
+      })).reverse(),
     };
 
     return NextResponse.json(formattedIndex);

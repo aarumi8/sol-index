@@ -33,11 +33,10 @@ const IndexActions: React.FC<Props> = ({ className, isLoading }) => {
 
             <div className="flex flex-col h-full gap-8">
                 <IndexAction title="Buy the index which contains all the tokens of it" titleBtn="Buy" />
+                <Title text="When buying an index, you will be prompted to buy each token in the index corresponding to its percentage in multiple transactions" size="xss" className="text-gray-600" />
                 <IndexAction title="Sell the index and receive all its value in SOL" titleBtn="Sell" />
-                <IndexAction title="Redeem the index and receive all the tokens of it" titleBtn="Redeem" />
+                <Title text="When selling an index, you will be prompted to sell each token in the index corresponding to its percentage in multiple transactions" size="xss" className="text-gray-600" />
             </div>
-
-            <Title text="All actions take 1% fee to the protocol and the index creator" size="xss" className="text-gray-600" />
         </Container>
     )
 }

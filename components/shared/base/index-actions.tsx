@@ -5,11 +5,10 @@ import IndexAction from "./index-action";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
-    className?: string;
     isLoading?: boolean;
 }
 
-const IndexActions: React.FC<Props> = ({ className, isLoading }) => {
+const IndexActions: React.FC<Props> = ({ isLoading }) => {
     if (isLoading) {
         return (
             <Container className="gap-4">

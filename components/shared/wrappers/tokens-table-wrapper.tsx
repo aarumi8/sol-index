@@ -6,9 +6,17 @@ import TokensTable from "@/components/shared/base/tokens-table";
 import { Title } from "@/components/shared/base/title";
 import Container from "@/components/shared/base/container";
 
+interface TableData {
+  token: string;
+  price: number;
+  mcap: string;
+  percentage: number;
+  address: string;
+}
+
 interface TokensTableWrapperProps {
   isLoading: boolean;
-  tokens: { token: string; price: number; mcap: string; percentage: number }[];
+  tokens: TableData[];
 }
 
 const TokensTableWrapper: React.FC<TokensTableWrapperProps> = ({ isLoading, tokens }) => {

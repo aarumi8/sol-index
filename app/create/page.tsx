@@ -3,13 +3,9 @@ import CreateMessage from "@/components/shared/base/create-message";
 import CreateIndexForm from "@/components/shared/forms/create-index-form";
 import React from "react";
 
-interface Props {
-    className?: string;
-}
-
-const CreatePage: React.FC<Props> = ({ className }) => {
+const CreatePage: React.FC = () => {
     return (
-        <div className={className}>
+        <div>
             <CreateMessage
                 className="mb-4"
                 title="Create Index"

@@ -89,7 +89,7 @@ export const BuyIndexHandler: React.FC<BuyIndexHandlerProps> = ({ amount, onComp
   const getCombinedTransaction = async (quotes: Quote[]) => {
     const response = await axios.post(`${JUPITER_API_BASE}/swap`, {
       quoteResponse: quotes,
-      userPublicKey: publicKey.toBase58(),
+      userPublicKey: publicKey!.toBase58(),
     });
     return response.data;
   };

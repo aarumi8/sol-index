@@ -6,12 +6,11 @@ import { SellModal } from "../modals/sell-modal";
 import { RedeemModal } from "../modals/redeem-modal";
 
 interface Props {
-    className?: string;
     title: string;
     titleBtn: string;
 }
 
-const IndexAction: React.FC<Props> = ({ className, title, titleBtn }) => {
+const IndexAction: React.FC<Props> = ({ title, titleBtn }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleConfirm = (value: string) => {
@@ -24,7 +23,7 @@ const IndexAction: React.FC<Props> = ({ className, title, titleBtn }) => {
             case 'buy':
                 return <BuyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />;
             case 'sell':
-                return <SellModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />;
+                return <SellModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />;
             case 'redeem':
                 return <RedeemModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />;
             default:

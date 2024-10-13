@@ -21,6 +21,7 @@ export const SellModal: React.FC<ActionModalProps> = ({ isOpen, onClose }) => {
         alert('Transaction successful!');
       } catch (err) {
         alert(error || 'An error occurred');
+        console.log(err);
       } finally {
         setIsProcessing(false);
         onClose();

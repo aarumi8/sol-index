@@ -8,11 +8,7 @@ import { useIndex } from '@/hooks/useIndex';
 import ChartWrapper from "@/components/shared/wrappers/chart-wrapper";
 import TokensTableWrapper from "@/components/shared/wrappers/tokens-table-wrapper";
 
-interface Props {
-    className?: string;
-}
-
-const IndexPage: React.FC<Props> = ({ className }) => {
+const IndexPage: React.FC = () => {
     const params = useParams();
     const address = params.id as string;
     const { indexData, isLoading, error } = useIndex(address);
@@ -22,7 +18,7 @@ const IndexPage: React.FC<Props> = ({ className }) => {
     }
 
     return (
-        <div className={cn(className, "")}>
+        <div className={cn("")}>
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="basis-2/3">
                     <ChartWrapper 
@@ -31,7 +27,7 @@ const IndexPage: React.FC<Props> = ({ className }) => {
                         title={indexData ? `${indexData.name} (${indexData.ticker})` : ''}
                     />
                 </div>
-                <div className={cn("basis-1/3", className)}>
+                <div className={cn("basis-1/3")}>
                     <IndexActions isLoading={isLoading} />
                 </div>
             </div>

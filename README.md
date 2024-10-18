@@ -1,4 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Description
+
+This is the demo app of of working token indicies on Solana Blockchain for Solana Hackathon. By creating an index you can include any tokens in it and users can buy and sell the index of these tokens using web3 wallte like Solflare or Phantom. The index price is an average of all tokens prices in the index. By using this solution, users don't have to worry about new trending tokens on Solana, they can just buy the popular indexes which already contain current top meta tokens.
+
+**Main page**
+
+<img width="1680" alt="Screenshot 2024-10-18 at 3 09 39 PM" src="https://github.com/user-attachments/assets/40401edc-7d83-462c-95c7-320d14595e46">
+
+
+**Index page**
+
+<img width="1680" alt="Screenshot 2024-10-18 at 3 09 53 PM" src="https://github.com/user-attachments/assets/5b607055-5b30-41c2-96e3-803b7a1dd571">
+
+
+The app is deployed on Vercel at https://sol-index-psi.vercel.app/
 
 ## Getting Started
 
